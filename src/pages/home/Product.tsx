@@ -38,7 +38,7 @@ const ProductList: React.FC = () => {
     <div className="container mx-auto my-8">
         <div className="flex justify-between">
             <h2 className="text-[40px] ml-10">Sifatli mahsulotlar <br /> kolleksiyasi</h2>
-            <button className="text-[#F27F62] mr-10">[ Barchasini ko‘rish ]</button>
+            <button className="text-[#F27F62] mr-11">[ Barchasini ko‘rish ]</button>
         </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
         {data?.products.map((product: IProduct) => (
