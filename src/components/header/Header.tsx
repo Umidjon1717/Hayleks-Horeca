@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoCartOutline } from "react-icons/io5";
 import { links } from "../../static";
 import { TbGridDots } from "react-icons/tb";
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <header className=" text-black p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
-        <div className="flex flex-col items-start gap-0 leading-[1.1]">
+        <div onClick={()=>navigate('/')} className="flex cursor-pointer flex-col items-start gap-0 leading-[1.1]">
           <h2 className="text-[28px] font-extrabold text-[#014F82] tracking-wide">
             Hayleks
           </h2>
