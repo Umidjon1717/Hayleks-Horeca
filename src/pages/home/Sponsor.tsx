@@ -31,7 +31,7 @@ const sentences = [
   <>
     <span>Innovatsiyalar</span> orqali <br />
     <span className="text-[#a29d9da3]">hamkorlarimiz</span> bilan{" "}
-    <span>oldinga siljimaktamiz</span>
+    <span>oldinga yurmoqdamiz</span>
   </>,
 ];
 const Sponsor = () => {
