@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useGetProductsQuery } from "../../redux/productApi";
 import { IProduct } from "../../types/types";
 import { BsCart3 } from "react-icons/bs";
 
 const ProductList: React.FC = () => {
-  const { data, error, isLoading } = useGetProductsQuery({ limit: 8, skip: 0 });
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const { data } = useGetProductsQuery({
+    limit: 1000000000,
+    skip: 0,
+  });
   const [cart, setCart] = useState<number[]>([]);
-  const navigate=useNavigate();
+
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(storedCart);
@@ -26,26 +31,25 @@ const ProductList: React.FC = () => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  if (isLoading)
-    return (
-      <div className="flex justify-center my-8">
-        <div className="loader"></div>
-      </div>
-    );
-  if (error) return <p>Error fetching products!</p>;
+  const totalPages = Math.ceil((data?.products.length || 0) / itemsPerPage);
+  const displayedProducts = data?.products.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div className="container mx-auto my-8">
-        <div className="flex justify-between">
-            <h2 className="text-[40px] ml-10">Sifatli mahsulotlar <br /> kolleksiyasi</h2>
-            <button onClick={()=>navigate('/product')} className="text-[#F27F62] hover:text-[#f26262] mr-11">[ Barchasini ko‘rish ]</button>
-        </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-        {data?.products.map((product: IProduct) => (
-          <div
-            key={product.id}
-            className=" p-4 transition-shadow flex flex-col"
-          >
+        {displayedProducts?.map((product: IProduct) => (
+          <div key={product.id} className="p-4 transition-shadow flex flex-col">
             <Link to={`/products/${product.id}`}>
               <img
                 src={product.thumbnail}
@@ -65,29 +69,47 @@ const ProductList: React.FC = () => {
                   <span className="font-medium">{product.category}</span>
                 </div>
               </div>
-
               <div className="mt-8 flex gap-10 justify-between items-center ">
                 <button className="bg-[#FF6418] text-white px-12 py-3 rounded-full font-semibold">
                   Sotib olish
                 </button>
-
                 <button
                   onClick={() => handleCart(product.id)}
                   className="bg-white p-[10px] rounded-full"
                 >
                   <BsCart3
-                  size={20}
-                    className={
-                      cart.includes(product.id)
-                        ? "text-green-500"
-                        : "text-gray-800"
-                    }
+                    size={20}
+                    className={cart.includes(product.id) ? "text-green-500" : "text-gray-800"}
                   />
                 </button>
               </div>
             </div>
           </div>
         ))}
+      </div>
+      <div className="flex justify-center mt-8 space-x-2">
+        <button
+          onClick={handlePrev}
+          disabled={currentPage === 1}
+          className="px-4 py-2 rounded bg-gray-300 disabled:opacity-50"
+        >
+          &lt;
+        </button>
+        <button className={`px-4 py-2 rounded ${"bg-[#014F82] text-white"}`}>
+          {currentPage}
+        </button>
+        {currentPage < totalPages && (
+          <button className="px-4 py-2 rounded bg-gray-300" onClick={() => setCurrentPage(currentPage + 1)}>
+            {currentPage + 1}
+          </button>
+        )}
+        <button
+          onClick={handleNext}
+          disabled={currentPage >= totalPages}
+          className="px-4 py-2 rounded bg-gray-300 disabled:opacity-50"
+        >
+          &gt;
+        </button>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import Layout from "../layout/Layout";
 import Home from "../pages/home/Home";
 import About from "../pages/about/About";
 import Portfolio from "../pages/portfolio/Portfolio";
+import ProductList from "../pages/product/Product";
 
 
 
@@ -63,6 +64,25 @@ const Routers = () => {
               element: (
                 <SuspenseContainer>
                   <Portfolio/>
+                </SuspenseContainer>
+              ),
+            },
+          ],
+        },
+        {
+          path: "/product",
+          element: (
+            <SuspenseContainer>
+              <Layout />
+            </SuspenseContainer>
+          ),
+          children: [
+            {
+              index:true,
+              path: "/product",
+              element: (
+                <SuspenseContainer>
+                  <ProductList/>
                 </SuspenseContainer>
               ),
             },
