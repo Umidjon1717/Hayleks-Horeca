@@ -4,6 +4,7 @@ import Chain from "./Chain";
 import Sponsor from "./Sponsor";
 import Goal from "./Goal";
 import ProductList from "./Product";
+import Portfolio_home from "./Portfolio_home";
 
 const Home = () => {
 
@@ -12,6 +13,7 @@ const Home = () => {
       <Hero/>
       <ProductList/>
       <Goal/>
+      <Portfolio_home/>
       <Chain/>
       <Sponsor/>
     </div>
