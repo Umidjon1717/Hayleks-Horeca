@@ -1,0 +1,320 @@
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useGetSingleProductQuery } from "../../redux/productApi";
+import { useGetCategoryProductsQuery } from "../../redux/productApi";
+import { BsCart3 } from "react-icons/bs";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
+const ProductDetail: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const { data: product } =
+    useGetSingleProductQuery(Number(id));
+
+  const [quantity, setQuantity] = useState(1);
+  const [cart, setCart] = useState<any[]>([]);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
+    setCart(storedCart);
+  }, []);
+
+  const handleAddToCart = () => {
+    if (!product) return;
+
+    const newCartItem = {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      thumbnail: product.thumbnail,
+      quantity,
+    };
+
+    const updatedCart = [...cart, newCartItem];
+    setCart(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
+  const handleQuantityChange = (amount: number) => {
+    setQuantity((prev) => Math.max(1, prev + amount));
+  };
+
+  const category = product?.category ?? "";
+  const { data: relatedProducts, isLoading: isRelatedLoading } =
+    useGetCategoryProductsQuery(category, {
+      skip: !category,
+    });
+    
+
+  const visibleProducts =
+    relatedProducts?.products?.slice(currentIndex, currentIndex + 4) || [];
+
+  const handleNext = () => {
+    if (relatedProducts?.products?.length) {
+      setCurrentIndex((prev) =>
+        prev + 4 < relatedProducts.products.length ? prev + 4 : 0
+      );
+    }
+  };
+
+  const handlePrev = () => {
+    if (relatedProducts?.products?.length) {
+      setCurrentIndex((prev) =>
+        prev - 4 >= 0 ? prev - 4 : relatedProducts.products.length - 4
+      );
+    }
+  };
+
+  useEffect(() => {
+    console.log("Related Products:", relatedProducts);
+  }, [relatedProducts]);
+
+  const handleCart = (id: number) => {
+    const productInCart = cart.find((item) => item.id === id);
+    if (productInCart) {
+      const updatedCart = cart.filter((item) => item.id !== id);
+      setCart(updatedCart);
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+    } else {
+      const relatedProduct = relatedProducts?.products.find(
+        (item) => item.id === id
+      );
+      if (relatedProduct) {
+        const newCartItem = {
+          id: relatedProduct.id,
+          title: relatedProduct.title,
+          price: relatedProduct.price,
+          thumbnail: relatedProduct.thumbnail,
+          quantity: 1,
+        };
+        const updatedCart = [...cart, newCartItem];
+        setCart(updatedCart);
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+      }
+    }
+  };
+  return (
+    <div className="my-8">
+      <div className="p-6 container mx-auto flex flex-col md:flex-row gap-10">
+        {product && (
+          <>
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-2">
+                {product.images.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`Thumbnail ${index}`}
+                    className={`w-16 h-16 object-cover cursor-pointer border-2 rounded-md transition ${
+                      selectedImage === img
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } hover:opacity-75`}
+                    onClick={() => setSelectedImage(img)}
+                  />
+                ))}
+              </div>
+
+              <div className="w-full md:w-[500px]">
+                <img
+                  src={selectedImage || product.thumbnail}
+                  alt={product.title}
+                  className="w-full h-[500px] object-cover rounded-md shadow-md"
+                />
+              </div>
+            </div>
+
+            <div className="w-full md:w-1/3 space-y-6">
+              <h2 className="text-2xl font-bold">{product.title}</h2>
+              <div className="flex justify-between items-center">
+                <p>Price</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  ${product.price}
+                </p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p>Stock</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  {product.stock}
+                </p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p>Category</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  {product.category}
+                </p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p>Brand</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  {product.brand}
+                </p>
+              </div>
+              <div>
+                <button className="text-[#F27F62]">
+                  [ Mahsulot haqida savol bering ]
+                </button>
+              </div>
+            </div>
+            <div className="w-full md:w-1/3 space-y-4 border p-4 rounded-xl">
+              <div className="flex justify-between items-center mb-14 p-2 rounded-md">
+                <button
+                  onClick={() => handleQuantityChange(-1)}
+                  className="px-4 py-2 border rounded hover:bg-[#F27F62] hover:text-white transition"
+                  aria-label="Decrease quantity"
+                >
+                  -
+                </button>
+                <span className="text-lg font-semibold">{quantity}</span>
+                <button
+                  onClick={() => handleQuantityChange(1)}
+                  className="px-4 py-2 border rounded hover:bg-[#F27F62] hover:text-white transition"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
+
+              <button
+                onClick={handleAddToCart}
+                className="w-full flex items-center justify-center gap-2 bg-[#F27F62] text-white px-6 py-3 rounded-full text-lg transition hover:bg-[#cc6248]"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 3h2l3.6 7.59M7 13h10l4-8H5.4M7 13l-2.2 4M7 13l3 6h8l3-6M5 21h14"
+                  />
+                </svg>
+                Savatga
+              </button>
+
+              <button
+                onClick={handleAddToCart}
+                className="w-full border text-black hover:bg-gray-100 px-6 py-3 rounded-full text-lg transition"
+              >
+                Bir bosishda xarid qilish
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+      <div className="p-6 container mx-auto">
+        <h2 className="text-2xl font-bold">Mahsulot haqida</h2>
+        <p className="text-lg w-2/3 text-gray-800 mt-4">
+          {product?.description || "No description available."}
+        </p>
+        {product && (
+          <>
+            <div className="w-full md:w-1/3 space-y-6 mt-16">
+              <h2 className="text-2xl font-bold">Xususiyatlari</h2>
+              <div className="flex justify-between items-center">
+                <p>Price</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  ${product.price}
+                </p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p>Stock</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  {product.stock}
+                </p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p>Category</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  {product.category}
+                </p>
+              </div>
+              <div className="flex justify-between items-center">
+                <p>Brand</p>
+                <p className="text-lg font-semibold text-gray-800">
+                  {product.brand}
+                </p>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      <div className="p-6 container mx-auto">
+        <div className="flex justify-between items-center mt-8">
+        
+            <div>
+              <h2 className="text-2xl font-bold">
+                Shu kategoriyadagi mahsulotlar
+              </h2>
+            </div>
+            <div className="flex gap-6 mt-4">
+              <button
+                onClick={handlePrev}
+                className="p-2 border rounded-lg hover:bg-gray-300"
+              >
+                <FiChevronLeft size={24} />
+              </button>
+              <button
+                onClick={handleNext}
+                className="p-2 border rounded-lg hover:bg-gray-300"
+              >
+                <FiChevronRight size={24} />
+              </button>
+            </div>
+        </div>
+
+        {isRelatedLoading ? (
+          <p>Yuklanmoqda...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-4">
+            {visibleProducts.map((relatedProduct) => (
+              <div
+                key={relatedProduct.id}
+                className="p-4 transition-shadow flex flex-col"
+              >
+                <Link to={`/products/${relatedProduct.id}`}>
+                  <img
+                  onClick={()=>window.scrollTo(0,0)}
+                    src={relatedProduct.thumbnail}
+                    alt={relatedProduct.title}
+                    className="w-full h-40 object-cover border rounded-md"
+                  />
+                </Link>
+                <div className="bg-[#F5F5F7] py-6 px-6 mt-3 rounded-lg">
+                  <h2 className="text-lg font-semibold">
+                    {relatedProduct.title}
+                  </h2>
+                  <div className="flex justify-between text-gray-500 mt-4">
+                    <span>Brand:</span>
+                    <span className="font-medium">{relatedProduct.brand}</span>
+                  </div>
+                  <div className="flex justify-between text-gray-500">
+                    <span>Category:</span>
+                    <span className="font-medium">
+                      {relatedProduct.category}
+                    </span>
+                  </div>
+                  <div className="mt-8 flex gap-10 justify-between items-center">
+                    <button onClick={()=>handleCart} className="bg-[#FF6418] text-white px-12 py-3 rounded-full font-semibold">
+                      Sotib olish
+                    </button>
+                    <button className="bg-white p-[10px] rounded-full">
+                      <BsCart3 size={20} className="text-gray-800" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProductDetail;

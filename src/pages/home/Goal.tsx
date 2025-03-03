@@ -6,7 +6,7 @@ const Goal = () => {
     <div className="container mx-auto py-16 px-6 lg:px-12">
       <div className="grid lg:grid-cols-2 gap-14 items-center">
 
-        <div className="bg-[#DFD6C9] rounded-2xl mt-[400px] shadow-xl px-8 py-8 flex items-center gap-10">
+        <div className="bg-[#DFD6C9] rounded-2xl mt-[420px] shadow-xl px-6 py-6 flex items-center gap-10">
           <div className="border-r border-black  pr-10 flex flex-col justify-between h-full">
             <h2 className="text-[32px] font-semibold text-gray-900 mb-4">
               Ko‘zlangan maqsad

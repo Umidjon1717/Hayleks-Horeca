@@ -1,14 +1,18 @@
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { IoCartOutline } from "react-icons/io5";
 import { links } from "../../static";
+import { NavLink } from "react-router-dom";
 import { TbGridDots } from "react-icons/tb";
 
 const Header = () => {
   const navigate = useNavigate();
   return (
-    <header className=" text-black p-4 shadow-md">
+    <header className=" text-black p-4 shadow-md sticky top-0 left-0 w-full z-50 bg-white">
       <div className="container mx-auto flex justify-between items-center">
-        <div onClick={()=>navigate('/')} className="flex cursor-pointer flex-col items-start gap-0 leading-[1.1]">
+        <div
+          onClick={() => navigate("/")}
+          className="flex cursor-pointer flex-col items-start gap-0 leading-[1.1]"
+        >
           <h2 className="text-[28px] font-extrabold text-[#014F82] tracking-wide">
             Hayleks
           </h2>
@@ -25,9 +29,16 @@ const Header = () => {
           <ul className="flex space-x-12">
             {links.map((link, index) => (
               <li key={index}>
-                <Link to={link.href} className="hover:text-[#014F82] transition">
+                <NavLink
+                  to={link.href}
+                  className={({ isActive }) =>
+                    `hover:text-[#014F82] transition ${
+                      isActive ? "border-b-2 border-[#014F82] text-[#014F82]" : ""
+                    }`
+                  }
+                >
                   {link.title}
-                </Link>
+                </NavLink>
               </li>
             ))}
           </ul>

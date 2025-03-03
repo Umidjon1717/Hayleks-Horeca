@@ -7,7 +7,7 @@ const extendedApi = mainApi.injectEndpoints({
       query: (params) => ({
         url: "products",
         method: "GET",
-        params, 
+        params,
       }),
       providesTags: ["Product"],
     }),
@@ -19,8 +19,21 @@ const extendedApi = mainApi.injectEndpoints({
       }),
       providesTags: ["Product"],
     }),
+
+    getCategoryProducts: build.query<IGetResponseProducts, string>({
+      query: (category) => ({
+        url: `products/category/${category}`,
+        method: "GET",
+      }),
+      providesTags: ["Product"],
+    }),
   }),
 });
 
-export const { useGetProductsQuery, useGetSingleProductQuery } = extendedApi;
+export const {
+  useGetProductsQuery,
+  useGetSingleProductQuery,
+  useGetCategoryProductsQuery,
+} = extendedApi;
+
 export default extendedApi;

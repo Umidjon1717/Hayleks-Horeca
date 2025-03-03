@@ -5,8 +5,9 @@ import Home from "../pages/home/Home";
 import About from "../pages/about/About";
 import Portfolio from "../pages/portfolio/Portfolio";
 import ProductList from "../pages/product/Product";
-
-
+import ProductDetail from "../pages/detail/ProductDetail";
+import Contact from "../pages/contact/Contact";
+import Sponsor from "../pages/sponsor/Sponsor";
 
 const Routers = () => {
   return (
@@ -21,7 +22,7 @@ const Routers = () => {
           ),
           children: [
             {
-              index:true,
+              index: true,
               path: "/",
               element: (
                 <SuspenseContainer>
@@ -40,11 +41,49 @@ const Routers = () => {
           ),
           children: [
             {
-              index:true,
+              index: true,
               path: "/about",
               element: (
                 <SuspenseContainer>
-                  <About/>
+                  <About />
+                </SuspenseContainer>
+              ),
+            },
+          ],
+        },
+        {
+          path: "/sponsors",
+          element: (
+            <SuspenseContainer>
+              <Layout />
+            </SuspenseContainer>
+          ),
+          children: [
+            {
+              index: true,
+              path: "/sponsors",
+              element: (
+                <SuspenseContainer>
+                  <Sponsor/>
+                </SuspenseContainer>
+              ),
+            },
+          ],
+        },
+        {
+          path: "/contact",
+          element: (
+            <SuspenseContainer>
+              <Layout />
+            </SuspenseContainer>
+          ),
+          children: [
+            {
+              index: true,
+              path: "/contact",
+              element: (
+                <SuspenseContainer>
+                  <Contact/>
                 </SuspenseContainer>
               ),
             },
@@ -59,11 +98,11 @@ const Routers = () => {
           ),
           children: [
             {
-              index:true,
+              index: true,
               path: "/portfolio",
               element: (
                 <SuspenseContainer>
-                  <Portfolio/>
+                  <Portfolio />
                 </SuspenseContainer>
               ),
             },
@@ -78,11 +117,29 @@ const Routers = () => {
           ),
           children: [
             {
-              index:true,
+              index: true,
               path: "/product",
               element: (
                 <SuspenseContainer>
-                  <ProductList/>
+                  <ProductList />
+                </SuspenseContainer>
+              ),
+            },
+          ],
+        },
+        {
+          path: "/products/:id",
+          element: (
+            <SuspenseContainer>
+              <Layout />
+            </SuspenseContainer>
+          ),
+          children: [
+            {
+              path: "/products/:id",
+              element: (
+                <SuspenseContainer>
+                  <ProductDetail />
                 </SuspenseContainer>
               ),
             },
