@@ -8,6 +8,7 @@ import ProductList from "../pages/product/Product";
 import ProductDetail from "../pages/detail/ProductDetail";
 import Contact from "../pages/contact/Contact";
 import Sponsor from "../pages/sponsor/Sponsor";
+import PortfolioDetail from "../pages/portfolio_detail/Detail_Portfolio";
 
 const Routers = () => {
   return (
@@ -140,6 +141,24 @@ const Routers = () => {
               element: (
                 <SuspenseContainer>
                   <ProductDetail />
+                </SuspenseContainer>
+              ),
+            },
+          ],
+        },
+        {
+          path: "/recipes/:id",
+          element: (
+            <SuspenseContainer>
+              <Layout />
+            </SuspenseContainer>
+          ),
+          children: [
+            {
+              path: "/recipes/:id",
+              element: (
+                <SuspenseContainer>
+                  <PortfolioDetail/>
                 </SuspenseContainer>
               ),
             },

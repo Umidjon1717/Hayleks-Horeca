@@ -2,11 +2,12 @@ import { useState } from "react";
 import { useGetRecipesQuery } from "../../redux/api";
 import { IRecipe } from "../../types/types";
 import { ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const PortfolioHome: React.FC = () => {
   const { data } = useGetRecipesQuery();
   const recipes = data?.recipes || [];
-
+  const navigate=useNavigate();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const selectedRecipe = recipes[selectedIndex];
 
@@ -73,7 +74,7 @@ const PortfolioHome: React.FC = () => {
               <p className="mt-4 text-sm text-gray-500">
                 {selectedRecipe.ingredients.join(", ")}
               </p>
-              <button className="text-[#F27F62] my-8">
+              <button  onClick={() => navigate(`/recipes/${selectedRecipe.id}`)} className="text-[#F27F62] my-8">
                 [ Batafsil ko‘rish ]
               </button>
             </div>
@@ -101,7 +102,7 @@ const PortfolioHome: React.FC = () => {
                     )}
                   </div>
                 ))}
-              <button className="text-[#F27F62] mt-14">
+              <button onClick={()=>navigate('/portfolio')} className="text-[#F27F62] mt-14">
                 [ Barcha loyihani ko‘rish ]
               </button>
             </div>
