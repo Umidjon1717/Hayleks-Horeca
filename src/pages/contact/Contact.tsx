@@ -30,11 +30,11 @@ const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
 
   return (
     <div className="container mx-auto p-6 flex flex-col items-center">
-      <h2 className="w-full max-w-md text-2xl font-semibold text-black text-center leading-snug">
+      <h2 className="w-full max-w-xl text-2xl font-semibold text-black text-center leading-snug">
         Buyurtma qoldiring va kerakli uskunalarni tez va qulay xarid qiling!
       </h2>
 
-      <div className="w-full max-w-md p-6 mt-6">
+      <div className="w-full max-w-xl p-6 mt-6">
         <form className="flex flex-col gap-4">
           <input
             type="text"

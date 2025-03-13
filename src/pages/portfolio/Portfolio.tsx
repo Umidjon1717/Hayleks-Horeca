@@ -40,11 +40,14 @@ const Portfolio: React.FC = () => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredRecipes.map((recipe: IRecipe) => (
+          
           <div
             key={recipe.id}
             className="bg-white shadow-md rounded-lg overflow-hidden hover:shadow-lg transition"
-            onClick={() => navigate(`/recipes/${recipe.id}`)}
-          >  
+            onClick={() => {
+              navigate(`/recipes/${recipe.id}`);
+              window.scrollTo(0, 0);
+            }} >  
             <img
               src={recipe.image}
               alt={recipe.name}

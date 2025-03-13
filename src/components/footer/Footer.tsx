@@ -3,8 +3,14 @@ import inst from "../../assets/images/inst.svg";
 import tg from "../../assets/images/tg.svg";
 import yt from "../../assets/images/yt.svg";
 import mail from "../../assets/images/mail.svg";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate=useNavigate();
+  const handleNavigate=()=>{
+    navigate('/contact');
+    window.scrollTo(0,0);
+  }
   return (
     <div className="bg-[radial-gradient(95.97%_87.71%_at_94.27%_76.81%,_#2975A9_0%,_#014D81_70.97%)] py-10">
       <div className="container mx-auto flex justify-between">
@@ -61,7 +67,7 @@ const Footer = () => {
           <p className="mb-4">Mijozga aylaning</p>
         </div>
         <div>
-          <button className="bg-[#FF6418] text-white px-10 py-4 rounded-full">Bizga yozing</button>
+          <button onClick={()=>handleNavigate()} className="bg-[#FF6418] text-white px-10 py-4 rounded-full">Bizga yozing</button>
         </div>
       </div>
       <hr />

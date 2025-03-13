@@ -13,6 +13,11 @@ const PortfolioHome: React.FC = () => {
 
   const [visibleCount] = useState(16);
 
+  const handleNavigate=()=>{
+    navigate(`/recipes/${selectedRecipe.id}`)
+    window.scrollTo(0,0)
+  }
+
   const handleNext = () => {
     if (selectedIndex < recipes.length - 1) {
       setSelectedIndex(selectedIndex + 1);
@@ -74,7 +79,7 @@ const PortfolioHome: React.FC = () => {
               <p className="mt-4 text-sm text-gray-500">
                 {selectedRecipe.ingredients.join(", ")}
               </p>
-              <button  onClick={() => navigate(`/recipes/${selectedRecipe.id}`)} className="text-[#F27F62] my-8">
+              <button  onClick={() => handleNavigate()} className="text-[#F27F62] my-8">
                 [ Batafsil ko‘rish ]
               </button>
             </div>
