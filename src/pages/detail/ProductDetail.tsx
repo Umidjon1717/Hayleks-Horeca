@@ -7,8 +7,7 @@ import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const ProductDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: product } =
-    useGetSingleProductQuery(Number(id));
+  const { data: product } = useGetSingleProductQuery(Number(id));
 
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState<any[]>([]);
@@ -45,7 +44,6 @@ const ProductDetail: React.FC = () => {
     useGetCategoryProductsQuery(category, {
       skip: !category,
     });
-    
 
   const visibleProducts =
     relatedProducts?.products?.slice(currentIndex, currentIndex + 4) || [];
@@ -96,11 +94,12 @@ const ProductDetail: React.FC = () => {
   };
   return (
     <div className="my-8">
-      <div className="p-6 container mx-auto flex flex-col md:flex-row gap-10">
+      <div className="p-6 container mx-auto flex flex-col lg:flex-row gap-10">
         {product && (
           <>
-            <div className="flex gap-4">
-              <div className="flex flex-col gap-2">
+            {/* Image Section */}
+            <div className="flex flex-col lg:flex-row gap-4 w-full lg:w-2/3">
+              <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-hidden">
                 {product.images.map((img, index) => (
                   <img
                     key={index}
@@ -116,49 +115,38 @@ const ProductDetail: React.FC = () => {
                 ))}
               </div>
 
-              <div className="w-full md:w-[500px]">
+              <div className="w-full">
                 <img
                   src={selectedImage || product.thumbnail}
                   alt={product.title}
-                  className="w-full h-[500px] object-cover rounded-md shadow-md"
+                  className="w-full h-[300px] md:h-[400px] lg:h-[500px] object-cover rounded-md shadow-md"
                 />
               </div>
             </div>
 
-            <div className="w-full md:w-1/3 space-y-6">
-              <h2 className="text-2xl font-bold">{product.title}</h2>
-              <div className="flex justify-between items-center">
-                <p>Price</p>
-                <p className="text-lg font-semibold text-gray-800">
-                  ${product.price}
-                </p>
+            {/* Product Info */}
+            <div className="w-full lg:w-1/3 space-y-4">
+              <h2 className="text-2xl font-bold text-center lg:text-left">
+                {product.title}
+              </h2>
+              <div className="grid grid-cols-2 gap-4 text-lg">
+                <p className="font-medium">Price:</p>
+                <p className="text-gray-800">${product.price}</p>
+                <p className="font-medium">Stock:</p>
+                <p className="text-gray-800">{product.stock}</p>
+                <p className="font-medium">Category:</p>
+                <p className="text-gray-800">{product.category}</p>
+                <p className="font-medium">Brand:</p>
+                <p className="text-gray-800">{product.brand}</p>
               </div>
-              <div className="flex justify-between items-center">
-                <p>Stock</p>
-                <p className="text-lg font-semibold text-gray-800">
-                  {product.stock}
-                </p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p>Category</p>
-                <p className="text-lg font-semibold text-gray-800">
-                  {product.category}
-                </p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p>Brand</p>
-                <p className="text-lg font-semibold text-gray-800">
-                  {product.brand}
-                </p>
-              </div>
-              <div>
-                <button className="text-[#F27F62]">
-                  [ Mahsulot haqida savol bering ]
-                </button>
-              </div>
+              <button className="text-[#F27F62] block text-center">
+                [ Mahsulot haqida savol bering ]
+              </button>
             </div>
-            <div className="w-full md:w-1/3 space-y-4 border p-4 rounded-xl">
-              <div className="flex justify-between items-center mb-14 p-2 rounded-md">
+
+            {/* Cart Section */}
+            <div className="w-full lg:w-1/3 space-y-4 border p-4 rounded-xl">
+              <div className="flex justify-center items-center space-x-4 p-2">
                 <button
                   onClick={() => handleQuantityChange(-1)}
                   className="px-4 py-2 border rounded hover:bg-[#F27F62] hover:text-white transition"
@@ -199,7 +187,7 @@ const ProductDetail: React.FC = () => {
 
               <button
                 onClick={handleAddToCart}
-                className="w-full border text-black hover:bg-gray-100 px-6 py-3 rounded-full text-lg transition"
+                className="w-full border xl:text-[12px] text-black hover:bg-gray-100 px-6 py-3 rounded-full  transition"
               >
                 Bir bosishda xarid qilish
               </button>
@@ -245,65 +233,67 @@ const ProductDetail: React.FC = () => {
         )}
       </div>
       <div className="p-6 container mx-auto">
-        <div className="flex justify-between items-center mt-8">
-        
-            <div>
-              <h2 className="text-2xl font-bold">
-                Shu kategoriyadagi mahsulotlar
-              </h2>
-            </div>
-            <div className="flex gap-6 mt-4">
-              <button
-                onClick={handlePrev}
-                className="p-2 border rounded-lg hover:bg-gray-300"
-              >
-                <FiChevronLeft size={24} />
-              </button>
-              <button
-                onClick={handleNext}
-                className="p-2 border rounded-lg hover:bg-gray-300"
-              >
-                <FiChevronRight size={24} />
-              </button>
-            </div>
+        <div className="flex flex-col md:flex-row justify-between items-center mt-8 gap-4">
+          <h2 className="text-2xl font-bold text-center md:text-left">
+            Shu kategoriyadagi mahsulotlar
+          </h2>
+          <div className="flex gap-4">
+            <button
+              onClick={handlePrev}
+              className="p-3 border rounded-lg hover:bg-gray-200 transition"
+            >
+              <FiChevronLeft size={24} />
+            </button>
+            <button
+              onClick={handleNext}
+              className="p-3 border rounded-lg hover:bg-gray-200 transition"
+            >
+              <FiChevronRight size={24} />
+            </button>
+          </div>
         </div>
 
         {isRelatedLoading ? (
-          <p>Yuklanmoqda...</p>
+          <p className="text-center text-lg mt-6">Yuklanmoqda...</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-6">
             {visibleProducts.map((relatedProduct) => (
               <div
                 key={relatedProduct.id}
-                className="p-4 transition-shadow flex flex-col"
+                className="p-4 bg-white shadow-md rounded-lg transition-transform transform hover:scale-105"
               >
-                <Link to={`/products/${relatedProduct.id}`}>
+                <Link
+                  to={`/products/${relatedProduct.id}`}
+                  onClick={() => window.scrollTo(0, 0)}
+                >
                   <img
-                  onClick={()=>window.scrollTo(0,0)}
                     src={relatedProduct.thumbnail}
                     alt={relatedProduct.title}
-                    className="w-full h-40 object-cover border rounded-md"
+                    className="w-full h-48 object-cover rounded-md border"
                   />
                 </Link>
-                <div className="bg-[#F5F5F7] py-6 px-6 mt-3 rounded-lg">
+                <div className="bg-gray-100 py-4 px-4 mt-4 rounded-lg">
                   <h2 className="text-lg font-semibold">
                     {relatedProduct.title}
                   </h2>
-                  <div className="flex justify-between text-gray-500 mt-4">
+                  <div className="flex justify-between text-gray-600 mt-3 text-sm">
                     <span>Brand:</span>
                     <span className="font-medium">{relatedProduct.brand}</span>
                   </div>
-                  <div className="flex justify-between text-gray-500">
+                  <div className="flex justify-between text-gray-600 text-sm">
                     <span>Category:</span>
                     <span className="font-medium">
                       {relatedProduct.category}
                     </span>
                   </div>
-                  <div className="mt-8 flex gap-10 justify-between items-center">
-                    <button onClick={()=>handleCart} className="bg-[#FF6418] text-white px-12 py-3 rounded-full font-semibold">
+                  <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                    <button
+                      onClick={() => handleCart}
+                      className="w-full bg-[#FF6418] text-white px-6 py-3 rounded-full font-semibold transition hover:bg-[#e55a16]"
+                    >
                       Sotib olish
                     </button>
-                    <button className="bg-white p-[10px] rounded-full">
+                    <button className="bg-white p-3 rounded-full border hover:bg-gray-200 transition">
                       <BsCart3 size={20} className="text-gray-800" />
                     </button>
                   </div>

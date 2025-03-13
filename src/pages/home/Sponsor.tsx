@@ -47,33 +47,36 @@ const Sponsor = () => {
     setIndex((prev) => (prev - 1 + sentences.length) % sentences.length);
   };
   return (
-    <div className="my-10">
+    <div className="my-10 px-4 md:px-0">
       <div className="container mx-auto">
-        <div className="flex space-x-4">
-          <div className="w-4 h-4 bg-black mt-1"></div>
-          <h2>Hamkorlarimiz</h2>
+        <div className="flex items-center space-x-2 md:space-x-4">
+          <div className="w-3 h-3 md:w-4 md:h-4 bg-black mt-1"></div>
+          <h2 className="text-lg md:text-2xl">Hamkorlarimiz</h2>
         </div>
-        <div className="flex items-center justify-between my-12">
-          <h2 className="text-[40px]">
+  
+        <div className="flex flex-col md:flex-row items-center justify-between my-8 md:my-12">
+          <h2 className="text-xl md:text-3xl text-center md:text-left">
             <span className="text-black">{sentences[index]}</span>
           </h2>
-
-          <div className="flex space-x-4">
+  
+          <div className="flex space-x-2 md:space-x-4 mt-4 md:mt-0">
             <div
-              className="border rounded-lg cursor-pointer"
+              className="border rounded-lg p-2 md:p-3 cursor-pointer"
               onClick={handlePrev}
             >
-              <GrFormPrevious className="text-black text-3xl" />
+              <GrFormPrevious className="text-black text-xl md:text-3xl" />
             </div>
             <div
-              className="border rounded-lg cursor-pointer"
+              className="border rounded-lg p-2 md:p-3 cursor-pointer"
               onClick={handleNext}
             >
-              <GrFormNext className="text-black text-3xl" />
+              <GrFormNext className="text-black text-xl md:text-3xl" />
             </div>
           </div>
         </div>
       </div>
+  
+      {/* First Swiper */}
       <div className="w-full overflow-hidden py-4">
         <Swiper
           modules={[FreeMode, Autoplay]}
@@ -92,7 +95,7 @@ const Sponsor = () => {
             0: { spaceBetween: 5 },
             480: { spaceBetween: 5 },
             767: { spaceBetween: 10 },
-            992: { spaceBetween: 10 },
+            992: { spaceBetween: 15 },
           }}
           className="trusted-by-swiper"
         >
@@ -104,12 +107,14 @@ const Sponsor = () => {
               <img
                 src={image}
                 alt={`Slide ${index + 1}`}
-                className="w-full max-[1050px]:h-[500px] max-[700px]:h-[400px] max-[600px]:h-[300px]"
+                className="w-auto h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] object-contain"
               />
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
+  
+      {/* Second Swiper */}
       <div className="w-full overflow-hidden py-4">
         <Swiper
           modules={[FreeMode, Autoplay]}
@@ -128,7 +133,7 @@ const Sponsor = () => {
             0: { spaceBetween: 5 },
             480: { spaceBetween: 5 },
             767: { spaceBetween: 10 },
-            992: { spaceBetween: 10 },
+            992: { spaceBetween: 15 },
           }}
           className="trusted-by-swiper"
         >
@@ -140,7 +145,7 @@ const Sponsor = () => {
               <img
                 src={image}
                 alt={`Slide ${index + 1}`}
-                className="w-full max-[1050px]:h-[500px] max-[700px]:h-[400px] max-[600px]:h-[300px]"
+                className="w-auto h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] object-contain"
               />
             </SwiperSlide>
           ))}
@@ -148,6 +153,8 @@ const Sponsor = () => {
       </div>
     </div>
   );
+  
+  
 };
 
 export default Sponsor;

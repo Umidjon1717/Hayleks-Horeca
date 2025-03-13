@@ -51,8 +51,10 @@ const Hero: React.FC = () => {
   );
 
   return (
-    <div className="container mx-auto flex justify-between gap-10 my-10">
-      <div className="">
+    <div className="container mx-auto flex flex-col lg:flex-row justify-between gap-6 my-10 px-4">
+      
+
+      <div className="w-full lg:w-2/3">
         <Swiper
           modules={[Navigation, Pagination, Autoplay, EffectFade]}
           navigation={{ enabled: true }}
@@ -60,33 +62,34 @@ const Hero: React.FC = () => {
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           effect="fade"
           loop
-          className="w-[892px] h-[334px]"
+          className="w-full max-w-[900px] h-[300px] md:h-[350px] lg:h-[400px]"
         >
           {images.map((img, index) => (
             <SwiperSlide key={index}>
               <img
                 src={img}
                 alt={`Slide ${index + 1}`}
-                className="w-[892px] h-[334px] object-cover"
+                className="w-full h-full object-cover rounded-lg"
               />
             </SwiperSlide>
           ))}
         </Swiper>
       </div>
-      <div className="w-full lg:w-1/3 bg-gray-100 rounded-2xl px-6 py-1 ">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-2xl font-semibold">Kun chegirmasi</h2>
+
+      <div className="w-full lg:w-1/3 bg-gray-100 rounded-2xl px-6 py-4">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl sm:text-2xl font-semibold">Kun chegirmasi</h2>
           <div className="text-orange-500 text-center">
-            <h2 className="text-3xl font-bold">
+            <h2 className="text-2xl sm:text-3xl font-bold">
               {highestDiscountProduct ? `${Math.floor(highestDiscountProduct.discountPercentage)}%` : "0%"}
             </h2>
-            <p className="text-sm">Chegirma</p>
+            <p className="text-sm sm:text-base">Chegirma</p>
           </div>
         </div>
 
         {highestDiscountProduct && (
-          <div className="p-4 rounded-lg flex items-center gap-10 mb-4">
-            <Link to={`/products/${highestDiscountProduct.id}`} className="w-1/3">
+          <div className="p-4  rounded-lg flex flex-col sm:flex-row items-center gap-6">
+            <Link to={`/products/${highestDiscountProduct.id}`} className="w-full sm:w-1/3">
               <img
                 src={highestDiscountProduct.thumbnail}
                 alt={highestDiscountProduct.title}
@@ -94,15 +97,23 @@ const Hero: React.FC = () => {
               />
             </Link>
 
-            <div className="w-2/3">
-              <h3 className="text-lg font-medium mb-4">{highestDiscountProduct.title}</h3>
-              <p className="text-gray-500 text-sm">Brand: <span className="ml-10">{highestDiscountProduct.brand}</span></p>
-              <p className="text-gray-500 text-sm">Category:  <span className="ml-6">{highestDiscountProduct.category}</span></p>
-              
+            <div className="w-full sm:w-2/3">
+              <h3 className="text-lg font-medium mb-2">{highestDiscountProduct.title}</h3>
+              <p className="text-gray-500 text-sm">
+                <span className="font-semibold">Brand:</span> {highestDiscountProduct.brand}
+              </p>
+              <p className="text-gray-500 text-sm">
+                <span className="font-semibold">Category:</span> {highestDiscountProduct.category}
+              </p>
+
               <div className="mt-4 flex flex-col gap-2">
                 <button
                   onClick={() => handleCart(highestDiscountProduct.id)}
-                  className={`flex items-center gap-2 pl-20 py-2 border rounded-full transition ${cart.includes(highestDiscountProduct.id) ? 'border-green-500 text-green-500' : 'border-gray-800 text-gray-800'}`}
+                  className={`flex items-center justify-center gap-2 py-2 border rounded-full transition ${
+                    cart.includes(highestDiscountProduct.id) 
+                      ? "border-green-500 text-green-500" 
+                      : "border-gray-800 text-gray-800"
+                  }`}
                 >
                   <BsCart3 size={20} /> Savatga
                 </button>
@@ -114,6 +125,7 @@ const Hero: React.FC = () => {
           </div>
         )}
       </div>
+      
     </div>
   );
 };
